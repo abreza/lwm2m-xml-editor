@@ -208,7 +208,7 @@ const Landing: FC<LandingProps> = () => {
                   type="number"
                   label="step"
                   value={step}
-                  onChange={(event: any) => setStep(event.target.value)}
+                  onChange={(event: any) => setStep(+event.target.value)}
                 />
               </Grid>
             </>
