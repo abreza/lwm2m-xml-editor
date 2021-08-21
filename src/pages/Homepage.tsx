@@ -82,7 +82,11 @@ const Landing: FC<LandingProps> = () => {
   });
 
   const downloadXml = (filename: string) => {
-    var builder = new xml2js.Builder();
+    var builder = new xml2js.Builder({
+      cdata: true,
+      renderOpts: { pretty: true, indent: '    ', newline: '\n' },
+    });
+
     var xml = builder.buildObject(lwm2mSchema);
 
     var element = document.createElement('a');
