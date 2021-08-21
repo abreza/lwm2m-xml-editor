@@ -1,0 +1,67 @@
+.fa-font-family {
+  font-family: IRANSans !important;
+  font-weight: 300;
+  letter-spacing: normal;
+}
+
+.fa-font-family .Toastify__toast-body {
+  direction: rtl;
+  font-family: IRANSans;
+  text-align: right;
+}
+
+.fa-font-family textarea {
+  font-family: IRANSans;
+}
+
+.signIn-background {
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: -1;
+  background: linear-gradient(#99999955, #99999955),
+    url('assets/images/back.png') no-repeat center center fixed;
+  filter: blur(3px);
+  -webkit-filter: blur(3px);
+  opacity: 0.7;
+
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+input.ltr-input,
+.ltr-input input {
+  text-align: left;
+  direction: ltr;
+}
+
+.recharts-wrapper {
+  direction: ltr;
+}
+
+.signIn-logos {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: -1;
+}
+
+.signIn-logos img {
+  width: 90px;
+  margin: 10px;
+}
+
+@media (max-width: 480px) {
+  .fa-font-family .Toastify__toast-container {
+    right: 0;
+  }
+}
+
+body[dir='rtl'] .MuiTabs-scrollButtons .MuiSvgIcon-root {
+  transform: scaleX(1);
+}
