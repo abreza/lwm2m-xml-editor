@@ -1,5 +1,5 @@
 {
-  "name": "lwm2mx-xml-loader",
+  "name": "lwm2m-xml-editor",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
