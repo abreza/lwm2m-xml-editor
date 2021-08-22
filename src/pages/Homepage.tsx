@@ -50,7 +50,8 @@ const objectType = [
 
 const Landing: FC<LandingProps> = () => {
   const [step, setStep] = useState(1);
-  const [tempId, setTempId] = useState();
+  const [tempId, setTempId] = useState(0);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
 
   const [lwm2mSchema, setLwm2mSchema] = useState({
     LWM2M: {
@@ -118,7 +119,10 @@ const Landing: FC<LandingProps> = () => {
   };
 
   // @ts-ignore
-  const rows = lwm2mSchema?.LWM2M?.Object?.[0]?.Resources?.[0]?.Item || [];
+  const rows =
+    lwm2mSchema?.LWM2M?.Object?.[0]?.Resources?.[0]?.Item.sort(
+      (a: any, b: any) => +a.$.ID - +b.$.ID
+    ) || [];
 
   const onChangeConfig = (event: any, key: string) => {
     const temp = { ...lwm2mSchema };
@@ -136,6 +140,9 @@ const Landing: FC<LandingProps> = () => {
   };
 
   const onChangeId = (index: number, newId: number) => {
+    if (!validateId(index, newId)) {
+      return;
+    }
     const temp = { ...lwm2mSchema };
     // @ts-ignore
     temp.LWM2M.Object[0].Resources[0].Item[index].$.ID = newId;
@@ -148,11 +155,6 @@ const Landing: FC<LandingProps> = () => {
     );
 
     if (found) {
-      const temp = { ...lwm2mSchema };
-      // @ts-ignore
-      temp.LWM2M.Object[0].Resources[0].Item[index].$.ID = tempId;
-      setLwm2mSchema(temp);
-
       alert('ERROR');
       return false;
     }
@@ -164,9 +166,8 @@ const Landing: FC<LandingProps> = () => {
     // @ts-ignore
     const currentId = lwm2mSchema.LWM2M.Object[0].Resources[0].Item[index].$.ID;
     const newId = direction === 'up' ? +currentId - step : +currentId + step;
-    if (validateId(index, newId)) {
-      onChangeId(index, newId);
-    }
+
+    onChangeId(index, newId);
   };
 
   return (
@@ -332,13 +333,17 @@ const Landing: FC<LandingProps> = () => {
                     <TableCell align="center">
                       <TextField
                         type="number"
-                        value={row.$.ID}
+                        value={focusedIndex === index ? tempId : row.$.ID}
                         inputProps={{ style: { textAlign: 'center' } }}
-                        onChange={(event: any) =>
-                          onChangeId(index, event.target.value)
-                        }
-                        onFocus={() => setTempId(row.$.ID)}
-                        onBlur={() => validateId(index, row.$.ID)}
+                        onChange={(event: any) => setTempId(event.target.value)}
+                        onFocus={() => {
+                          setFocusedIndex(index);
+                          setTempId(row.$.ID);
+                        }}
+                        onBlur={() => {
+                          setFocusedIndex(-1);
+                          onChangeId(index, tempId);
+                        }}
                       />
                     </TableCell>
                     <TableCell align="center">
