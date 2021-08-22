@@ -174,6 +174,36 @@ const Landing: FC<LandingProps> = () => {
     onChangeId(index, newId);
   };
 
+  const getMaxId = () => {
+    if (rows.length === 0) return -1;
+    return Math.max.apply(
+      Math,
+      rows.map((row: any) => {
+        return row.$.ID;
+      })
+    );
+  };
+
+  const addItem = () => {
+    const temp = { ...lwm2mSchema };
+
+    const item = {
+      $: { ID: getMaxId() + 1 },
+      Name: [''],
+      Operations: [''],
+      MultipleInstances: [''],
+      Mandatory: [''],
+      Type: [''],
+      RangeEnumeration: [''],
+      Units: [''],
+      Description: [''],
+    };
+
+    // @ts-ignore
+    temp.LWM2M.Object[0].Resources[0].Item.push(item);
+    setLwm2mSchema(temp);
+  };
+
   return (
     <Box py={2}>
       <Container>
@@ -440,6 +470,9 @@ const Landing: FC<LandingProps> = () => {
             </Table>
           </Paper>
         </Box>
+        <Button onClick={addItem} variant="contained" color="primary">
+          Add Item
+        </Button>
       </Container>
     </Box>
   );
